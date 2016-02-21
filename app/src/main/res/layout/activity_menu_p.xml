@@ -21,8 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:text="Trace"
-            android:id="@+id/button2"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/trace_b"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:onClick="trace_swap"/>
 
         <ListView
             android:layout_width="match_parent"
