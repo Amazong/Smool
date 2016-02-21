@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="smool.main.MainActivity"
+    android:background="#447ca8">
+
+    <ImageView
+        android:layout_width="157dp"
+        android:layout_height="90dp"
+        android:id="@+id/Logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="LOGIN WITH:"
+        android:id="@+id/textView"
+        android:layout_below="@+id/Logo"
+        android:layout_centerHorizontal="true"
+        android:typeface="normal"
+        android:textIsSelectable="false"
+        android:textColor="#ffffff"
+        android:layout_marginTop="20dp"
+        android:textSize="15dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/username"
+        android:hint="Username"
+        android:textAlignment="center"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/password"
+        android:hint="Password"
+        android:textAlignment="center"
+        android:layout_below="@+id/username"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignStart="@+id/username" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="login"
+        android:text="Login"
+        android:layout_marginTop="46dp"
+        android:id="@+id/button"
+        android:background="#1b2ec2"
+        android:layout_below="@+id/password"
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignStart="@+id/password" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="registar"
+        android:text="Sign In"
+        android:background="#1b2ec2"
+        android:layout_alignTop="@+id/button"
+        android:layout_alignRight="@+id/password"
+        android:layout_alignEnd="@+id/password" />
+
+</RelativeLayout>
