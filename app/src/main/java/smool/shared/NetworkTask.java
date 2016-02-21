@@ -75,7 +75,8 @@ public class NetworkTask extends AsyncTask<Void, Object, Boolean> {
                     Log.d("minhas", "recebi alguma cena");
                     this.data = read;
                     received = 1;
-
+                    oos.close();
+                    ois.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
