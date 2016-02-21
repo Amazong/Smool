@@ -11,6 +11,7 @@ package smool.main;
         import java.util.ArrayList;
         import smool.shared.*;
         import java.util.Date;
+        import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         Button a= (Button) findViewById(R.id.stopRoute);
         a.setEnabled(true);
 
-
+        stop=false;
 
         new Thread(new Runnable() {
             Date data=new Date();
@@ -74,8 +75,15 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 GPSTracker gps = new GPSTracker(MainActivity.this);
                                 gps.showSettingAlert();
+                                Button b = (Button) findViewById(R.id.startRoute);
+                                b.setEnabled(true);
+
+                                Button a= (Button) findViewById(R.id.stopRoute);
+                                a.setEnabled(false);
+                                stop=true;
                             }
                         });
+                        return;
                     }
                     if (latitude == 0 && longitude == 0) {
                         MainActivity.this.runOnUiThread(new Runnable() {
@@ -106,9 +114,6 @@ public class MainActivity extends AppCompatActivity {
           5-login
           6-alterar dados utilizador
          */
-
-        NetworkTask networktask = new NetworkTask(novarota, 1); //Create initial instance so SendDataToNetwork doesn't throw an error.
-        networktask.execute();
     }
 
 
@@ -153,7 +158,13 @@ public class MainActivity extends AppCompatActivity {
             } else{
                 eu.setID(result);
             //Toast.makeText(getApplicationContext(),"Autentificação falhou!", Toast.LENGTH_LONG).show();
-                setContentView(R.layout.activity_main);
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_SHORT).show();
+                        setContentView(R.layout.activity_main);
+                    }
+                });
             }
 
         }
@@ -162,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void registar(View view){
+    public void registar(View view) {
        /*1-Rotas
           2-eliminar rota  send = rota; flag = 1
           3-request rota
@@ -173,30 +184,48 @@ public class MainActivity extends AppCompatActivity {
         TextView username = (TextView) findViewById(R.id.username);
         TextView password = (TextView) findViewById(R.id.password);
 
-        if(!username.getText().equals("") && !username.getText().equals("")) {
+        String user, pass;
+
+        user = "" + username.getText();
+        pass = "" + password.getText();
+
+        if (!user.equals("") && !pass.equals("")) {
             eu.setUsername("" + username.getText());
             eu.setPassword("" + password.getText());
 
-            int result = (int)senddata(eu, 4);
+            Thread t =new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final int result = (int) senddata(eu, 4);
 
-            if (result == -1){
-                Toast.makeText(getApplicationContext(),"Criar conta falhou!", Toast.LENGTH_LONG).show();
-            } else{
-                eu.setID(result);
-                //Toast.makeText(getApplicationContext(),"Autentificação falhou!", Toast.LENGTH_LONG).show();
-                setContentView(R.layout.activity_main);
-            }
-
+                    if (result == -1) {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        eu.setID(result);
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+            t.start();
         }
         else{
-            Toast.makeText(getApplicationContext(),"Por favor , preencha os campos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Por favor , preencha os campos", Toast.LENGTH_SHORT).show();
         }
     }
 
-
     public void para_rota(View view) throws InterruptedException {
         stop = true;
-        Toast.makeText(getApplicationContext(),"Stop: " + stop, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"Rota Concluida", Toast.LENGTH_SHORT).show();
 
 
 

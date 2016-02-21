@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="registar"
-        android:text="Sign In"
+        android:text="Sign up"
         android:background="#1b2ec2"
         android:layout_alignTop="@+id/button"
         android:layout_alignRight="@+id/password"
