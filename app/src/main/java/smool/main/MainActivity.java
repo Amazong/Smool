@@ -1,20 +1,15 @@
 package smool.main;
 
 import android.content.Intent;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.String;
-import java.util.ArrayList;
 
 import smool.shared.*;
-
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,27 +52,41 @@ public class MainActivity extends AppCompatActivity {
         TextView username = (TextView) findViewById(R.id.username);
         TextView password = (TextView) findViewById(R.id.password);
 
-        if (!username.getText().equals("") && !username.getText().equals("")) {
+        String user, pass;
+
+        user = "" + username.getText();
+        pass = "" + password.getText();
+
+        if (!user.equals("") && !pass.equals("")) {
             eu.setUsername("" + username.getText());
             eu.setPassword("" + password.getText());
 
-            int result = (int) senddata(eu, 5);
+            Thread t =new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final int result = (int) senddata(eu, 4);
 
-            if (result == -1) {
-                Toast.makeText(getApplicationContext(), "Autentificação falhou!", Toast.LENGTH_LONG).show();
-            } else {
-                eu.setID(result);
-                //Toast.makeText(getApplicationContext(),"Autentificação falhou!", Toast.LENGTH_LONG).show();
-
-                Intent myIntent = new Intent(MainActivity.this, MenuP.class);
-                myIntent.putExtra("user", eu); //Optional parameters
-                MainActivity.this.startActivity(myIntent);
-
-
-                //setContentView(R.layout.activity_menu_p);
-            }
-
-        } else {
+                    if (result == -1) {
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Username not available", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        eu.setID(result);
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+            t.start();
+        }
+        else{
             Toast.makeText(getApplicationContext(), "Por favor , preencha os campos", Toast.LENGTH_SHORT).show();
         }
     }
@@ -109,13 +118,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(MainActivity.this, MenuP.class);
                 myIntent.putExtra("user", eu); //Optional parameters
                 MainActivity.this.startActivity(myIntent);
-
             }
-
-        } else {
-            Toast.makeText(getApplicationContext(), "Por favor , preencha os campos", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }
